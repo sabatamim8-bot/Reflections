@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reflective Journal — A 13-Week Course Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     RESET & DESIGN TOKENS — Soft Pastel Professional Palette
+     ========================================================= */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Soft pastel palette: blush, sage, lavender on warm cream */
+    --bg: #faf6f1;
+    --bg-elev: #ffffff;
+    --bg-soft: #f3ece2;
+    --bg-warm: #f7eee5;
+    --ink: #463f55;          /* deep dusty plum */
+    --ink-soft: #6f6884;
+    --ink-muted: #a59fb4;
+    --line: #ece2d3;
+    --line-soft: #f3ebde;
+
+    --sage: #b6cdb8;          /* soft sage */
+    --sage-deep: #87a692;
+    --sage-soft: #e4eee3;
+
+    --blush: #e9c9cb;          /* dusty blush */
+    --blush-deep: #c99a9d;
+    --blush-soft: #f7e9ea;
+
+    --lavender: #cdc1de;        /* soft lavender */
+    --lavender-deep: #9f8fbf;
+    --lavender-soft: #efeaf6;
+
+    --honey: #e8c891;          /* warm honey */
+    --peach: #f0c7a8;          /* soft peach */
+
+    --accent: var(--sage-deep);
+    --accent-soft: var(--sage-soft);
+    --danger: #c97a6b;
+    --success: #87a692;
+
+    --radius-sm: 6px;
+    --radius: 16px;
+    --radius-lg: 24px;
+    --shadow-sm: 0 1px 2px rgba(70,63,85,.05), 0 1px 1px rgba(70,63,85,.04);
+    --shadow: 0 6px 28px -8px rgba(70,63,85,.12), 0 2px 6px rgba(70,63,85,.04);
+    --shadow-lg: 0 30px 60px -16px rgba(70,63,85,.20);
+    --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --tx: 220ms cubic-bezier(.2,.7,.2,1);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background:
+      radial-gradient(1100px 540px at 8% -8%, rgba(205,193,222,.45), transparent 60%),
+      radial-gradient(900px 520px at 110% 6%, rgba(233,201,203,.42), transparent 60%),
+      radial-gradient(800px 500px at 50% 110%, rgba(182,205,184,.36), transparent 60%),
+      radial-gradient(700px 380px at -10% 60%, rgba(240,199,168,.30), transparent 60%),
+      radial-gradient(700px 380px at 110% 75%, rgba(232,200,145,.26), transparent 60%),
+      var(--bg);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Decorative floating shapes */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: .55;
+  }
+  body::before {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, var(--lavender) 0%, transparent 70%);
+    top: 30%; left: -180px;
+    animation: float 18s ease-in-out infinite alternate;
+  }
+  body::after {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, var(--blush) 0%, transparent 70%);
+    top: 65%; right: -160px;
+    animation: float 22s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes float {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(40px, -30px); }
+  }
+  .nav, header, section, footer, .lock-indicator, .fab, .fmt-toolbar { position: relative; z-index: 1; }
+  .nav { z-index: 50; }
+
+  /* =========================================================
+     EDITABLE AFFORDANCES (when unlocked)
+     ========================================================= */
+  [data-edit] { position: relative; }
+  body.unlocked [data-edit] {
+    cursor: text;
+    transition: background var(--tx), box-shadow var(--tx);
+    border-radius: 6px;
+    outline: 1px dashed transparent;
+  }
+  body.unlocked [data-edit]:hover {
+    background: rgba(159,143,191,.08);
+    outline-color: rgba(159,143,191,.45);
+    outline-offset: 3px;
+  }
+  body.unlocked [data-edit][contenteditable="true"] {
+    background: #fff;
+    outline: 2px solid var(--lavender-deep);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 6px rgba(159,143,191,.12);
+  }
+  .lock-indicator {
+    position: fixed; left: 22px; bottom: 22px;
+    background: var(--bg-elev); border: 1px solid var(--line);
+    border-radius: 999px; padding: 9px 16px;
+    font-size: 12px; font-weight: 600; color: var(--ink-soft);
+    letter-spacing: .06em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    z-index: 25;
+    transition: all var(--tx);
+  }
+  .lock-indicator:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .lock-indicator svg { width: 14px; height: 14px; }
+  .lock-indicator.unlocked {
+    background: linear-gradient(135deg, var(--sage-soft), var(--lavender-soft));
+    color: var(--sage-deep);
+    border-color: var(--sage);
+  }
+
+  /* =========================================================
+     NAV
+     ========================================================= */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    background: rgba(250,246,241,.78);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1320px; margin: 0 auto;
+    padding: 14px 32px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--ink);
+  }
+  .brand-mark {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--lavender) 0%, var(--blush) 60%, var(--peach) 100%);
+    color: var(--ink); display: grid; place-items: center;
+    font-family: var(--serif); font-weight: 600; font-size: 21px;
+    box-shadow: var(--shadow-sm);
+  }
+  .brand-title {
+    font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -.01em;
+    line-height: 1;
+  }
+  .brand-sub { font-size: 11px; color: var(--ink-muted); letter-spacing: .14em; text-transform: uppercase; margin-top: 4px; font-weight: 500;}
+  .nav-links { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .nav-link {
+    text-decoration: none; color: var(--ink-soft);
+    padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 500;
+    transition: all var(--tx);
+    background: transparent; border: 0; cursor: pointer; font-family: inherit;
+  }
+  .nav-link:hover { color: var(--ink); background: var(--bg-soft); }
+  .nav-cta {
+    background: linear-gradient(135deg, var(--sage-deep), var(--lavender-deep)) !important;
+    color: #fff !important;
+    padding: 9px 18px !important;
+    border-radius: 999px !important;
+    box-shadow: var(--shadow-sm);
+  }
+  .nav-cta:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+  .menu-toggle { display: none; background: none; border: 0; cursor: pointer; color: var(--ink); }
+
+  /* =========================================================
+     HERO
+     ========================================================= */
+  .hero {
+    max-width: 1320px; margin: 0 auto; padding: 64px 32px 48px;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--lavender-deep); font-weight: 600;
+  }
+  .eyebrow::before { content: ''; width: 34px; height: 1px; background: var(--lavender-deep); }
+  .hero h1 {
+    font-family: var(--serif); font-weight: 500;
+    font-size: clamp(40px, 5.2vw, 64px);
+    line-height: 1.05; letter-spacing: -0.025em;
+    margin: 20px 0 22px;
+    color: var(--ink);
+  }
+  .hero h1 em { font-style: italic; color: var(--sage-deep); font-weight: 500; }
+  .hero-lede {
+    font-family: var(--serif); font-size: 21px; font-weight: 400;
+    color: var(--ink-soft); max-width: 60ch;
+    margin-bottom: 30px; line-height: 1.5;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 999px; font-weight: 500;
+    font-size: 14px; cursor: pointer; border: 0; text-decoration: none;
+    transition: all var(--tx);
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--sage-deep), var(--lavender-deep));
+    color: #fff; box-shadow: var(--shadow-sm);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow); filter: brightness(1.05); }
+  .btn-ghost { background: var(--bg-elev); color: var(--ink); border: 1px solid var(--line); }
+  .btn-ghost:hover { background: var(--bg-warm); border-color: var(--ink-muted); }
+  .btn-accent { background: var(--sage); color: var(--ink); }
+  .btn-accent:hover { background: var(--sage-deep); color: #fff; }
+  .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--line); }
+  .btn-danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+  .btn-sm { padding: 8px 14px; font-size: 13px; }
+
+  .hero-card {
+    position: relative;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow);
+  }
+  .hero-card::before {
+    content: ''; position: absolute; inset: -1px;
+    border-radius: var(--radius-lg);
+    padding: 1px; pointer-events: none;
+    background: linear-gradient(160deg, var(--lavender), transparent 40%, var(--blush));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: .8;
+  }
+  .progress-label {
+    display: flex; justify-content: space-between; align-items: end; margin-bottom: 14px;
+  }
+  .progress-label strong { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--ink); }
+  .progress-label span { font-size: 13px; color: var(--ink-muted); }
+  .progress-bar {
+    height: 10px; background: var(--bg-soft); border-radius: 999px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage) 0%, var(--lavender) 50%, var(--blush) 100%);
+    border-radius: 999px;
+    transition: width 700ms cubic-bezier(.2,.7,.2,1);
+  }
+  .progress-meta {
+    margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .progress-meta div { text-align: center; }
+  .progress-meta b {
+    display: block; font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--ink);
+  }
+  .progress-meta small { color: var(--ink-muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+
+  /* =========================================================
+     SECTIONS
+     ========================================================= */
+  section.section { max-width: 1320px; margin: 0 auto; padding: 44px 32px; }
+  .section-title {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    margin-bottom: 30px; flex-wrap: wrap;
+  }
+  .section-title h2 {
+    font-family: var(--serif); font-size: 40px; font-weight: 500;
+    letter-spacing: -0.02em; color: var(--ink);
+  }
+  .section-title h2 .num { color: var(--lavender-deep); margin-right: 10px; font-style: italic; font-weight: 400; }
+  .section-title .meta { color: var(--ink-muted); font-size: 14px; }
+
+  .about-card {
+    background: linear-gradient(135deg, var(--bg-elev) 0%, var(--bg-warm) 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 40px 48px;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+  }
+  .about-text {
+    font-family: var(--serif); font-size: 21px; line-height: 1.6; color: var(--ink-soft);
+    max-width: 80ch;
+  }
+  .about-text p + p { margin-top: 18px; }
+  .about-text strong { color: var(--ink); font-weight: 600; }
+
+  /* =========================================================
+     TIMELINE / WEEKS — WIDE LAYOUT
+     ========================================================= */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 32px; top: 24px; bottom: 24px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--lavender) 0%, var(--blush) 40%, var(--sage) 80%, transparent 100%);
+    opacity: .5;
+  }
+  .week {
+    position: relative;
+    padding: 36px 0 36px 84px;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .week:last-child { border-bottom: 0; }
+  .week-dot {
+    position: absolute; left: 16px; top: 42px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--bg-elev); border: 2px solid var(--line);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-size: 14px; font-weight: 600; color: var(--ink-soft);
+    transition: all var(--tx);
+  }
+  .week.has-posts .week-dot {
+    color: #fff; border-color: transparent;
+  }
+  /* Colored week dots cycling through pastels */
+  .week:nth-child(7n+1) .week-dot.colored { background: linear-gradient(135deg, #b8a8d8, #9f8fbf); box-shadow: 0 0 0 5px rgba(159,143,191,.18); }
+  .week:nth-child(7n+2) .week-dot.colored { background: linear-gradient(135deg, #e9c3c5, #c99a9d); box-shadow: 0 0 0 5px rgba(201,154,157,.18); }
+  .week:nth-child(7n+3) .week-dot.colored { background: linear-gradient(135deg, #b6cdb8, #87a692); box-shadow: 0 0 0 5px rgba(135,166,146,.18); }
+  .week:nth-child(7n+4) .week-dot.colored { background: linear-gradient(135deg, #f0c7a8, #d4a574); box-shadow: 0 0 0 5px rgba(212,165,116,.18); }
+  .week:nth-child(7n+5) .week-dot.colored { background: linear-gradient(135deg, #a5c5d5, #5a8db8); box-shadow: 0 0 0 5px rgba(90,141,184,.18); }
+  .week:nth-child(7n+6) .week-dot.colored { background: linear-gradient(135deg, #e8c891, #c9a878); box-shadow: 0 0 0 5px rgba(201,168,120,.18); }
+  .week:nth-child(7n+7) .week-dot.colored { background: linear-gradient(135deg, #d8a8d4, #a85a8b); box-shadow: 0 0 0 5px rgba(168,90,139,.18); }
+  .week-header {
+    display: flex; justify-content: space-between; align-items: end;
+    margin-bottom: 22px; gap: 16px; flex-wrap: wrap;
+  }
+  .week-title {
+    font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.15;
+    color: var(--ink);
+  }
+  .week-title small {
+    display: block; font-family: var(--sans); font-size: 12px;
+    color: var(--lavender-deep); font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* Wide horizontal post cards */
+  .posts-list { display: flex; flex-direction: column; gap: 20px; }
+  .post {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all var(--tx);
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: 200px;
+    position: relative;
+  }
+  .post::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--lavender), var(--blush), var(--peach), var(--sage));
+    z-index: 2;
+  }
+  .post:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--lavender);
+  }
+  /* Color stripe variants by week */
+  .week:nth-child(7n+1) .post::before { background: linear-gradient(90deg, #cdc1de, #9f8fbf); }
+  .week:nth-child(7n+2) .post::before { background: linear-gradient(90deg, #e9c9cb, #c99a9d); }
+  .week:nth-child(7n+3) .post::before { background: linear-gradient(90deg, #b6cdb8, #87a692); }
+  .week:nth-child(7n+4) .post::before { background: linear-gradient(90deg, #f0c7a8, #d4a574); }
+  .week:nth-child(7n+5) .post::before { background: linear-gradient(90deg, #a5c5d5, #5a8db8); }
+  .week:nth-child(7n+6) .post::before { background: linear-gradient(90deg, #e8c891, #c9a878); }
+  .week:nth-child(7n+7) .post::before { background: linear-gradient(90deg, #d8a8d4, #a85a8b); }
+  .post-img-wrap {
+    background: var(--bg-soft);
+    overflow: hidden; position: relative;
+    min-height: 200px;
+  }
+  .post-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .post-img-wrap.no-img {
+    background:
+      linear-gradient(135deg, var(--lavender-soft) 0%, var(--blush-soft) 50%, var(--sage-soft) 100%);
+    display: grid; place-items: center;
+    color: var(--ink-muted);
+    font-family: var(--serif); font-size: 56px; font-style: italic; font-weight: 500;
+  }
+  .post-body { padding: 28px 32px 26px; display: flex; flex-direction: column; }
+  .post-meta {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-size: 11px; color: var(--ink-muted); letter-spacing: .1em; text-transform: uppercase;
+    margin-bottom: 12px; font-weight: 600;
+  }
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 10.5px; letter-spacing: .08em; font-weight: 700;
+  }
+  .pill-week { background: var(--lavender-soft); color: var(--lavender-deep); }
+  .pill-date { background: var(--sage-soft); color: var(--sage-deep); }
+  .pill-tag { background: var(--blush-soft); color: var(--blush-deep); text-transform: none; letter-spacing: .02em; font-weight: 600; }
+  .pill-tag:nth-of-type(3n+1) { background: #fde2d3; color: #c97a3b; }
+  .pill-tag:nth-of-type(3n+2) { background: var(--lavender-soft); color: var(--lavender-deep); }
+  .pill-tag:nth-of-type(3n) { background: #dde9f3; color: #5a8db8; }
+  .post-title {
+    font-family: var(--serif); font-size: 26px; font-weight: 500; line-height: 1.2;
+    margin-bottom: 12px; color: var(--ink); letter-spacing: -.01em;
+  }
+  .post-text {
+    color: var(--ink-soft); font-size: 16px; line-height: 1.65;
+    font-family: var(--serif);
+    flex: 1;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-text.expanded { -webkit-line-clamp: unset; display: block; }
+  .post-actions {
+    display: flex; gap: 6px; align-items: center;
+    margin-top: 18px; padding-top: 16px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .post-actions .spacer { flex: 1; }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: transparent; border: 1px solid transparent;
+    color: var(--ink-muted); display: grid; place-items: center; cursor: pointer;
+    transition: all var(--tx);
+  }
+  .icon-btn:hover { background: var(--lavender-soft); color: var(--lavender-deep); }
+  .icon-btn.danger:hover { background: var(--blush-soft); color: var(--danger); }
+  .icon-btn svg { width: 16px; height: 16px; }
+
+  .empty {
+    padding: 40px; text-align: center;
+    background: linear-gradient(135deg, var(--bg-elev) 0%, var(--bg-warm) 100%);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    color: var(--ink-muted);
+  }
+  .empty .em-title { font-family: var(--serif); font-size: 22px; color: var(--ink-soft); margin-bottom: 6px; font-style: italic; font-weight: 500;}
+  .empty button { margin-top: 16px; }
+
+  /* =========================================================
+     FAB & TOOLBAR
+     ========================================================= */
+  .fab {
+    position: fixed; right: 28px; bottom: 28px;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--sage-deep), var(--lavender-deep));
+    color: #fff;
+    border: 0; cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    display: grid; place-items: center;
+    transition: all var(--tx);
+    z-index: 30;
+  }
+  .fab:hover { transform: scale(1.07) rotate(90deg); }
+  .fab svg { width: 24px; height: 24px; }
+
+  .toolbar {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    margin-bottom: 16px;
+  }
+  .search { flex: 1; min-width: 220px; position: relative; }
+  .search input {
+    width: 100%; padding: 11px 16px 11px 42px;
+    border-radius: 999px; border: 1px solid var(--line);
+    background: var(--bg-elev);
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    transition: all var(--tx);
+  }
+  .search input:focus { outline: none; border-color: var(--lavender); box-shadow: 0 0 0 4px rgba(205,193,222,.25); }
+  .search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-muted); }
+  .filter-select {
+    padding: 11px 16px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--bg-elev); font-family: inherit; font-size: 14px; color: var(--ink); cursor: pointer;
+  }
+  .filter-select:focus { outline: none; border-color: var(--lavender); }
+
+  /* =========================================================
+     MODAL
+     ========================================================= */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(70,63,85,.4);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
+    animation: fadeIn 200ms ease;
+  }
+  .modal-backdrop.open { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .modal {
+    background: var(--bg-elev);
+    border-radius: var(--radius-lg);
+    width: 100%; max-width: 680px;
+    max-height: 92vh; overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 320ms cubic-bezier(.2,.7,.2,1);
+    border: 1px solid var(--line);
+  }
+  .modal-header {
+    padding: 26px 32px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-header h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; }
+  .modal-body { padding: 26px 32px; }
+  .modal-footer {
+    padding: 18px 32px 26px;
+    display: flex; justify-content: flex-end; gap: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 6px; font-weight: 600;
+  }
+  .field input[type="text"],
+  .field input[type="password"],
+  .field input[type="date"],
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 11px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    font-family: inherit; font-size: 15px;
+    color: var(--ink);
+    transition: all var(--tx);
+  }
+  .field textarea { min-height: 180px; resize: vertical; font-family: var(--serif); font-size: 17px; line-height: 1.6; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--lavender); box-shadow: 0 0 0 4px rgba(205,193,222,.22);
+  }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .file-drop {
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 24px; text-align: center;
+    background: var(--bg-warm);
+    cursor: pointer;
+    transition: all var(--tx);
+  }
+  .file-drop:hover, .file-drop.drag { border-color: var(--lavender); background: var(--lavender-soft); }
+  .file-drop input { display: none; }
+  .file-drop .hint { color: var(--ink-muted); font-size: 13px; }
+  .file-drop .hint b { color: var(--lavender-deep); }
+  .preview-wrap { position: relative; margin-top: 12px; display: none; }
+  .preview-wrap.has-img { display: block; }
+  .preview-wrap img { max-width: 100%; border-radius: var(--radius); display: block; }
+  .preview-remove {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(70,63,85,.85); color: #fff; border: 0; cursor: pointer;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+
+  /* Password modal — special centered look */
+  .lock-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--lavender-soft), var(--blush-soft));
+    display: grid; place-items: center;
+    margin: 0 auto 16px;
+    color: var(--lavender-deep);
+  }
+  .lock-icon svg { width: 28px; height: 28px; }
+  .pw-intro { text-align: center; color: var(--ink-soft); margin-bottom: 22px; }
+
+  /* =========================================================
+     TOAST
+     ========================================================= */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--ink); color: #fff;
+    padding: 12px 24px; border-radius: 999px;
+    font-size: 14px; box-shadow: var(--shadow-lg);
+    opacity: 0; transition: all 320ms cubic-bezier(.2,.7,.2,1);
+    z-index: 200;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* =========================================================
+     FOOTER
+     ========================================================= */
+  footer {
+    max-width: 1320px; margin: 60px auto 0; padding: 32px 32px 48px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-muted); font-size: 13px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  footer a { color: var(--ink-soft); text-decoration: none; cursor: pointer; }
+  footer a:hover { color: var(--lavender-deep); }
+
+  /* =========================================================
+     FLOATING FORMAT TOOLBAR
+     ========================================================= */
+  .fmt-toolbar {
+    position: fixed; top: 84px; left: 50%; transform: translateX(-50%) translateY(-12px);
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 6px;
+    display: none;
+    align-items: center; gap: 2px; flex-wrap: wrap;
+    box-shadow: var(--shadow-lg);
+    z-index: 90;
+    max-width: 95vw;
+    opacity: 0;
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+  .fmt-toolbar.show { display: flex; opacity: 1; transform: translateX(-50%) translateY(0); }
+  .fmt-btn {
+    width: 34px; height: 34px;
+    background: transparent; border: 0; cursor: pointer;
+    border-radius: 8px;
+    color: var(--ink-soft);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-size: 14px; font-weight: 600;
+    transition: all var(--tx);
+    position: relative;
+  }
+  .fmt-btn:hover { background: var(--lavender-soft); color: var(--lavender-deep); }
+  .fmt-btn.active { background: var(--sage-soft); color: var(--sage-deep); }
+  .fmt-btn svg { width: 16px; height: 16px; }
+  .fmt-divider { width: 1px; height: 22px; background: var(--line); margin: 0 4px; }
+  .fmt-select {
+    height: 34px; padding: 0 10px;
+    background: transparent; border: 0; cursor: pointer;
+    color: var(--ink-soft);
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    border-radius: 8px;
+  }
+  .fmt-select:hover { background: var(--lavender-soft); color: var(--lavender-deep); }
+  .fmt-select:focus { outline: none; }
+
+  .fmt-pop {
+    position: absolute; top: 42px; left: 50%; transform: translateX(-50%);
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: var(--shadow);
+    display: none;
+    z-index: 95;
+    min-width: 180px;
+  }
+  .fmt-pop.show { display: block; }
+  .swatches {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+  }
+  .swatch {
+    width: 24px; height: 24px; border-radius: 6px; cursor: pointer;
+    border: 1px solid rgba(70,63,85,.1);
+    transition: transform 120ms ease;
+  }
+  .swatch:hover { transform: scale(1.12); }
+  .swatch.clear {
+    background:
+      linear-gradient(45deg, transparent 46%, var(--danger) 46%, var(--danger) 54%, transparent 54%),
+      #fff;
+  }
+  .fmt-pop .pop-label {
+    font-size: 10px; color: var(--ink-muted); letter-spacing: .12em;
+    text-transform: uppercase; margin-bottom: 8px; font-weight: 600; text-align: center;
+  }
+  .fmt-pop .custom-color {
+    display: flex; align-items: center; gap: 6px; margin-top: 8px;
+    padding-top: 8px; border-top: 1px solid var(--line);
+  }
+  .fmt-pop .custom-color input[type="color"] {
+    width: 32px; height: 28px; border: 1px solid var(--line); border-radius: 6px;
+    background: transparent; cursor: pointer; padding: 2px;
+  }
+  .fmt-pop .custom-color span { font-size: 11px; color: var(--ink-muted); }
+
+  /* allow rich text inside editable blocks */
+  [data-edit] strong, [data-edit] b { font-weight: 700; color: var(--ink); }
+  [data-edit] em, [data-edit] i { font-style: italic; }
+  [data-edit] u { text-decoration: underline; text-decoration-color: var(--lavender-deep); text-underline-offset: 3px; }
+  [data-edit] s, [data-edit] strike { text-decoration: line-through; }
+  [data-edit] a { color: var(--lavender-deep); text-decoration: underline; text-underline-offset: 2px; }
+  [data-edit] ul, [data-edit] ol { padding-left: 1.4em; margin: .4em 0; }
+  [data-edit] li { margin: .2em 0; }
+  [data-edit] h1 { font-family: var(--serif); font-size: 2em; font-weight: 600; margin: .2em 0; }
+  [data-edit] h2 { font-family: var(--serif); font-size: 1.5em; font-weight: 600; margin: .2em 0; }
+  [data-edit] blockquote {
+    border-left: 3px solid var(--lavender);
+    padding: 4px 14px;
+    margin: 8px 0;
+    font-style: italic; color: var(--ink-soft);
+    background: var(--lavender-soft);
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* =========================================================
+     RESPONSIVE
+     ========================================================= */
+  @media (max-width: 980px) {
+    .hero { grid-template-columns: 1fr; padding-top: 44px; gap: 30px; }
+    .post { grid-template-columns: 1fr; }
+    .post-img-wrap { aspect-ratio: 16/8; min-height: auto; }
+  }
+  @media (max-width: 760px) {
+    .nav-links { display: none; gap: 0; flex-direction: column; position: absolute; top: 70px; right: 12px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px; box-shadow: var(--shadow); min-width: 200px; }
+    .nav-links.open { display: flex; align-items: stretch; }
+    .nav-link { width: 100%; text-align: left; }
+    .menu-toggle { display: grid; place-items: center; width: 42px; height: 42px; margin-left: auto; border-radius: 10px; }
+    .menu-toggle:hover { background: var(--bg-soft); }
+    .week { padding-left: 60px; }
+    .timeline::before { left: 18px; }
+    .week-dot { left: 2px; }
+    .field-row { grid-template-columns: 1fr; }
+    .about-card { padding: 26px; }
+    .post-body { padding: 22px; }
+    .lock-indicator { left: 12px; bottom: 12px; }
+  }
+
+  @media print {
+    .nav, .fab, .post-actions, .toolbar, .lock-indicator { display: none !important; }
+    body { background: #fff; }
+    .post { break-inside: avoid; box-shadow: none; }
+  }
+</style>
+</head>
+<body class="locked">
+
+<!-- ===================================================== NAV ===================================================== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <div class="brand-mark" data-edit data-key="brand_mark" data-multiline="false" data-maxlen="1">R</div>
+      <div>
+        <div class="brand-title" data-edit data-key="brand_title">Reflections</div>
+        <div class="brand-sub" data-edit data-key="brand_sub">A 13-week journal</div>
+      </div>
+    </a>
+    <button class="menu-toggle" aria-label="Open menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#beginning" class="nav-link">Beginning</a>
+      <a href="#timeline" class="nav-link">Weeks</a>
+      <button class="nav-link" onclick="exportData()">Export</button>
+      <button class="nav-link" onclick="document.getElementById('importInput').click()">Import</button>
+      <input type="file" id="importInput" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="nav-link nav-cta" onclick="requireUnlock(()=>openPostModal())">+ New Post</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================================================== HERO ===================================================== -->
+<header id="top" class="hero">
+  <div>
+    <span class="eyebrow" data-edit data-key="hero_eyebrow">Reflective Blogging · Assignment #1</span>
+    <h1 data-edit data-key="hero_h1" data-html="true">A space for <em>thinking</em>, <em>making</em>, and looking back.</h1>
+    <p class="hero-lede" data-edit data-key="hero_lede">Thirteen weeks of reading, doing, and noticing. Each post here is a small act of reflection — on a tool tried, a question raised, or a perspective changed.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="requireUnlock(()=>openPostModal())">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Write a new reflection
+      </button>
+      <a href="#beginning" class="btn btn-ghost">Read the beginning →</a>
+    </div>
+  </div>
+
+  <aside class="hero-card">
+    <div class="progress-label">
+      <strong id="postCount">0</strong>
+      <span data-edit data-key="progress_label">of 10 required posts</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-meta">
+      <div><b id="weeksWithPosts">0</b><small data-edit data-key="meta_weeks">Weeks active</small></div>
+      <div><b id="totalPosts">0</b><small data-edit data-key="meta_total">Total posts</small></div>
+      <div><b id="checkinStatus">—</b><small data-edit data-key="meta_checkin">Check-in</small></div>
+    </div>
+  </aside>
+</header>
+
+<!-- ===================================================== BEGINNING ===================================================== -->
+<section class="section" id="beginning">
+  <div class="section-title">
+    <h2><span class="num">§</span><span data-edit data-key="sec1_title">The Beginning</span></h2>
+    <span class="meta" data-edit data-key="sec1_meta">Course introduction · click to edit when unlocked</span>
+  </div>
+  <div class="about-card">
+    <div class="about-text" data-edit data-key="about_text" data-multiline="true"></div>
+  </div>
+</section>
+
+<!-- ===================================================== TIMELINE ===================================================== -->
+<section class="section" id="timeline">
+  <div class="section-title">
+    <h2><span class="num">§</span><span data-edit data-key="sec2_title">Week by Week</span></h2>
+    <span class="meta" data-edit data-key="sec2_meta">Thirteen weeks · at least 10 posts</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Search posts by title, text, or tag…" oninput="render()">
+    </div>
+    <select class="filter-select" id="filterWeek" onchange="render()">
+      <option value="">All weeks</option>
+    </select>
+  </div>
+
+  <div class="timeline" id="timelineList"></div>
+</section>
+
+<footer>
+  <div data-edit data-key="footer_left">© 2026 Reflective Journal · Saved locally in your browser</div>
+  <div>
+    <a onclick="exportData()">Export JSON</a> ·
+    <a onclick="if(confirm('Reset ALL data? This cannot be undone.')){ localStorage.removeItem('rb_data'); location.reload(); }">Reset</a>
+  </div>
+</footer>
+
+<!-- ===================================================== FLOATING FORMAT TOOLBAR ===================================================== -->
+<div class="fmt-toolbar" id="fmtToolbar" onmousedown="event.preventDefault()">
+  <select class="fmt-select" id="fmtBlock" title="Paragraph style" onmousedown="event.stopPropagation()" onchange="applyBlock(this.value); this.value=''">
+    <option value="">Style</option>
+    <option value="P">Paragraph</option>
+    <option value="H1">Heading 1</option>
+    <option value="H2">Heading 2</option>
+    <option value="H3">Heading 3</option>
+    <option value="BLOCKQUOTE">Quote</option>
+  </select>
+  <select class="fmt-select" id="fmtFont" title="Font family" onmousedown="event.stopPropagation()" onchange="applyFontFamily(this.value); this.value=''" style="min-width:120px;">
+    <option value="">Font</option>
+    <option value="Inter, sans-serif">Inter (Sans)</option>
+    <option value="'Fraunces', serif">Fraunces (Serif)</option>
+    <option value="'Playfair Display', serif">Playfair Display</option>
+    <option value="'Lora', serif">Lora</option>
+    <option value="'Merriweather', serif">Merriweather</option>
+    <option value="Georgia, serif">Georgia</option>
+    <option value="'Montserrat', sans-serif">Montserrat</option>
+    <option value="'Poppins', sans-serif">Poppins</option>
+    <option value="'Caveat', cursive">Caveat (Handwriting)</option>
+    <option value="'Roboto Mono', monospace">Roboto Mono</option>
+  </select>
+  <select class="fmt-select" id="fmtSize" title="Text size" onmousedown="event.stopPropagation()" onchange="applyFontSize(this.value); this.value=''" style="min-width:90px;">
+    <option value="">Size</option>
+    <option value="12px">Tiny</option>
+    <option value="14px">Small</option>
+    <option value="16px">Normal</option>
+    <option value="18px">Medium</option>
+    <option value="22px">Large</option>
+    <option value="28px">X-Large</option>
+    <option value="36px">XX-Large</option>
+    <option value="48px">Huge</option>
+    <option value="reset">Reset</option>
+  </select>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" data-cmd="bold" title="Bold (Ctrl/Cmd+B)"><b>B</b></button>
+  <button class="fmt-btn" data-cmd="italic" title="Italic (Ctrl/Cmd+I)"><em>I</em></button>
+  <button class="fmt-btn" data-cmd="underline" title="Underline (Ctrl/Cmd+U)"><u>U</u></button>
+  <button class="fmt-btn" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" id="fmtColorBtn" title="Text color" onclick="togglePop('colorPop', event)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21h16"/><path d="M7 17l5-12 5 12"/><path d="M9 13h6"/></svg>
+    <div class="fmt-pop" id="colorPop">
+      <div class="pop-label">Text color</div>
+      <div class="swatches" id="textSwatches"></div>
+      <div class="custom-color">
+        <input type="color" id="customTextColor" onchange="applyColor('foreColor', this.value)">
+        <span>Custom</span>
+      </div>
+    </div>
+  </button>
+  <button class="fmt-btn" id="fmtHiliteBtn" title="Highlight" onclick="togglePop('hilitePop', event)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l-6 6v3h3l6-6"/><path d="M14 6l4 4"/><path d="M21 14L10 3l-4 4 11 11 4-4z"/></svg>
+    <div class="fmt-pop" id="hilitePop">
+      <div class="pop-label">Highlight</div>
+      <div class="swatches" id="hiliteSwatches"></div>
+      <div class="custom-color">
+        <input type="color" id="customHiliteColor" onchange="applyColor('hiliteColor', this.value)">
+        <span>Custom</span>
+      </div>
+    </div>
+  </button>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" data-cmd="insertUnorderedList" title="Bullet list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>
+  </button>
+  <button class="fmt-btn" data-cmd="insertOrderedList" title="Numbered list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" data-cmd="justifyLeft" title="Align left">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+  </button>
+  <button class="fmt-btn" data-cmd="justifyCenter" title="Align center">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/></svg>
+  </button>
+  <button class="fmt-btn" data-cmd="justifyRight" title="Align right">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
+  </button>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" onclick="addLink()" title="Insert link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"/></svg>
+  </button>
+  <button class="fmt-btn" data-cmd="removeFormat" title="Clear formatting">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3"/><line x1="5" y1="20" x2="11" y2="20"/><line x1="13" y1="4" x2="8" y2="20"/><line x1="20" y1="20" x2="14" y2="14"/></svg>
+  </button>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" onclick="commitInlineEdit()" title="Done editing" style="color:var(--sage-deep);">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  </button>
+</div>
+
+<!-- Lock indicator -->
+<div class="lock-indicator" id="lockIndicator" onclick="toggleLock()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="lockIcon">
+    <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
+  <span id="lockLabel">Locked · click to edit</span>
+</div>
+
+<!-- FAB -->
+<button class="fab" title="Write a new post" onclick="requireUnlock(()=>openPostModal())" aria-label="New post">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+</button>
+
+<!-- ===================================================== MODAL: POST ===================================================== -->
+<div class="modal-backdrop" id="postModal" onclick="if(event.target===this)closePostModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="postModalTitle">New Reflection</h3>
+      <button class="icon-btn" onclick="closePostModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editingId" value="">
+      <div class="field-row">
+        <div class="field">
+          <label for="postWeek">Week</label>
+          <select id="postWeek"></select>
+        </div>
+        <div class="field">
+          <label for="postDate">Date</label>
+          <input type="date" id="postDate">
+        </div>
+      </div>
+      <div class="field">
+        <label for="postTitle">Title</label>
+        <input type="text" id="postTitle" placeholder="A short, evocative title…">
+      </div>
+      <div class="field">
+        <label for="postBody">Reflection</label>
+        <textarea id="postBody" placeholder="What did you encounter this week? What surprised you? What changed?"></textarea>
+      </div>
+      <div class="field">
+        <label for="postTags">Tags <span style="color:var(--ink-muted); font-weight:400; text-transform:none; letter-spacing:0;">(comma separated)</span></label>
+        <input type="text" id="postTags" placeholder="digital tools, pedagogy, AI">
+      </div>
+      <div class="field">
+        <label>Image</label>
+        <label class="file-drop" for="imgInput" id="fileDrop">
+          <input type="file" id="imgInput" accept="image/*" onchange="onImageChosen(event)">
+          <div class="hint">Drop an image here, or <b>browse</b> · JPG, PNG, WebP</div>
+        </label>
+        <div class="preview-wrap" id="previewWrap">
+          <img id="previewImg" alt="Preview">
+          <button class="preview-remove" type="button" onclick="clearImage()" title="Remove image">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closePostModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="savePost()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Save reflection
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== MODAL: PASSWORD ===================================================== -->
+<div class="modal-backdrop" id="pwModal" onclick="if(event.target===this)closePwModal()">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h3>Unlock editing</h3>
+      <button class="icon-btn" onclick="closePwModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <p class="pw-intro">Enter the password to edit content, headings, posts, and images.</p>
+      <div class="field">
+        <label for="pwInput">Password</label>
+        <input type="password" id="pwInput" placeholder="Enter password…" autocomplete="off" onkeydown="if(event.key==='Enter')submitPassword()">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closePwModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitPassword()">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== TOAST ===================================================== -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================================================================
+   STATE
+   =================================================================== */
+const STORAGE_KEY = 'rb_data';
+const PASSWORD = 'P@ssw0rd22';
+
+const DEFAULT_WEEK_TITLES = [
+  "Setting the stage",
+  "First tools, first impressions",
+  "Voice & audience",
+  "Reading as a digital practice",
+  "Writing as a digital practice",
+  "Collaboration & community",
+  "Mid-term check-in",
+  "Critical perspectives",
+  "Designing for learners",
+  "Ethics, AI, and authorship",
+  "Iteration & feedback",
+  "Showcasing the work",
+  "Closing reflections"
+];
+
+const DEFAULT_ABOUT =
+`<p>Welcome to my reflective journal for the course. Over the next <strong>thirteen weeks</strong>, this space will hold short writings on the issues, approaches, and digital tools I encounter — a place to think aloud about what is working, what is challenging, and how my thinking is shifting.</p>
+<p>The plan is to contribute a post <strong>each week</strong>, with the goal of at least <strong>ten original reflections</strong> by the end of the term. Three check-in points along the way will mark progress and invite revision.</p>
+<p>This journal embraces honest, careful reflection. Posts will mix <strong>text</strong> with <strong>images</strong> when an artifact, screenshot, or photograph helps a thought land. AI tools may be used for idea generation, proofreading, and editing — never for producing the reflections themselves (Level 4 of the OnTechU AI scale).</p>`;
+
+const DEFAULT_TEXT = {
+  brand_mark: 'R',
+  brand_title: 'Reflections',
+  brand_sub: 'A 13-week journal',
+  hero_eyebrow: 'Reflective Blogging · Assignment #1',
+  hero_h1: 'A space for <em>thinking</em>, <em>making</em>, and looking back.',
+  hero_lede: 'Thirteen weeks of reading, doing, and noticing. Each post here is a small act of reflection — on a tool tried, a question raised, or a perspective changed.',
+  progress_label: 'of 10 required posts',
+  meta_weeks: 'Weeks active',
+  meta_total: 'Total posts',
+  meta_checkin: 'Check-in',
+  sec1_title: 'The Beginning',
+  sec1_meta: 'Course introduction · click to edit when unlocked',
+  sec2_title: 'Week by Week',
+  sec2_meta: 'Thirteen weeks · at least 10 posts',
+  about_text: DEFAULT_ABOUT,
+  footer_left: '© 2026 Reflective Journal · Saved locally in your browser'
+};
+
+let state = loadState();
+let unlocked = sessionStorage.getItem('rb_unlocked') === '1';
+let pendingAction = null;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      data.text = Object.assign({}, DEFAULT_TEXT, data.text || {});
+      data.weekTitles = data.weekTitles || DEFAULT_WEEK_TITLES.slice();
+      data.posts = data.posts || [];
+      return data;
+    }
+  } catch (e) { console.warn(e); }
+  return { text: Object.assign({}, DEFAULT_TEXT), weekTitles: DEFAULT_WEEK_TITLES.slice(), posts: [] };
+}
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch (e) {
+    if (e.name === 'QuotaExceededError') toast('Storage full — try smaller images or export & reset.');
+    else toast('Could not save.');
+  }
+}
+
+/* ===================================================================
+   PASSWORD / LOCK
+   =================================================================== */
+function applyLockState() {
+  document.body.classList.toggle('unlocked', unlocked);
+  document.body.classList.toggle('locked', !unlocked);
+  const ind = document.getElementById('lockIndicator');
+  const lbl = document.getElementById('lockLabel');
+  const icon = document.getElementById('lockIcon');
+  if (unlocked) {
+    ind.classList.add('unlocked');
+    lbl.textContent = 'Unlocked · click to lock';
+    icon.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>';
+  } else {
+    ind.classList.remove('unlocked');
+    lbl.textContent = 'Locked · click to edit';
+    icon.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>';
+  }
+  // Toggle contenteditable on editable nodes
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    if (unlocked) el.setAttribute('tabindex', '0'); else el.removeAttribute('tabindex');
+  });
+}
+
+function toggleLock() {
+  if (unlocked) {
+    unlocked = false;
+    sessionStorage.removeItem('rb_unlocked');
+    applyLockState();
+    toast('Locked.');
+  } else {
+    openPwModal();
+  }
+}
+
+function requireUnlock(fn) {
+  if (unlocked) { fn(); return; }
+  pendingAction = fn;
+  openPwModal();
+}
+
+function openPwModal() {
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwModal').classList.add('open');
+  setTimeout(() => document.getElementById('pwInput').focus(), 100);
+}
+function closePwModal() { document.getElementById('pwModal').classList.remove('open'); pendingAction = null; }
+function submitPassword() {
+  const val = document.getElementById('pwInput').value;
+  if (val === PASSWORD) {
+    unlocked = true;
+    sessionStorage.setItem('rb_unlocked', '1');
+    applyLockState();
+    closePwModal();
+    toast('Editing unlocked.');
+    if (pendingAction) { const f = pendingAction; pendingAction = null; setTimeout(f, 80); }
+  } else {
+    toast('Incorrect password.');
+    const inp = document.getElementById('pwInput');
+    inp.value = ''; inp.focus();
+    inp.style.borderColor = 'var(--danger)';
+    setTimeout(() => inp.style.borderColor = '', 800);
+  }
+}
+
+/* ===================================================================
+   INLINE EDITING — works across ALL [data-edit] elements
+   =================================================================== */
+// All editable fields are HTML-capable now (so the formatting toolbar can persist styles).
+function setEditableValue(el, value) {
+  el.innerHTML = value || '';
+}
+function readEditableValue(el) {
+  return el.innerHTML.trim();
+}
+
+let currentEditEl = null;
+
+function showFormatToolbar() {
+  document.getElementById('fmtToolbar').classList.add('show');
+}
+function hideFormatToolbar() {
+  document.getElementById('fmtToolbar').classList.remove('show');
+  closeAllPops();
+}
+
+function startInlineEdit(el) {
+  if (!unlocked) { requireUnlock(() => startInlineEdit(el)); return; }
+  if (el.getAttribute('contenteditable') === 'true') return;
+  // Finish any other in-progress edit first
+  if (currentEditEl && currentEditEl !== el) finishInlineEdit(currentEditEl);
+  el.setAttribute('contenteditable', 'true');
+  el.focus();
+  currentEditEl = el;
+  showFormatToolbar();
+  // Select all on first focus
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges(); sel.addRange(range);
+}
+
+function finishInlineEdit(el) {
+  if (!el || el.getAttribute('contenteditable') !== 'true') return;
+  el.setAttribute('contenteditable', 'false');
+  if (currentEditEl === el) { currentEditEl = null; hideFormatToolbar(); }
+  const key = el.dataset.key;
+  if (!key) return;
+  const value = readEditableValue(el);
+  if (key.startsWith('week_title_')) {
+    const w = parseInt(key.split('_')[2], 10) - 1;
+    state.weekTitles[w] = value;
+  } else if (key === 'about_text') {
+    state.text.about_text = value;
+  } else if (key === 'post_title' || key === 'post_body') {
+    const id = el.dataset.postId;
+    const p = state.posts.find(x => x.id === id);
+    if (p) {
+      if (key === 'post_title') p.title = value;
+      if (key === 'post_body') p.body = value;
+    }
+  } else {
+    state.text[key] = value;
+  }
+  saveState();
+}
+
+function commitInlineEdit() {
+  if (currentEditEl) {
+    currentEditEl.blur();
+  }
+}
+
+/* ===================================================================
+   TOOLBAR — formatting commands
+   =================================================================== */
+const TEXT_SWATCHES = [
+  '#463f55', '#6f6884', '#9f8fbf', '#c99a9d', '#87a692', '#e8c891',
+  '#c97a6b', '#5a8db8', '#a85a8b', '#d4a574', '#5a8b6a', '#000000'
+];
+const HILITE_SWATCHES = [
+  '#fff9c4', '#f7e9ea', '#efeaf6', '#e4eee3', '#fde2d3', '#dde9f3',
+  '#f7d8e9', '#e9f7d8', '#d8e9f7', '#f7f3d8', '#f4e1ff', 'transparent'
+];
+
+function buildSwatches() {
+  const ts = document.getElementById('textSwatches');
+  ts.innerHTML = '';
+  TEXT_SWATCHES.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'swatch';
+    s.style.background = c;
+    s.title = c;
+    s.onmousedown = e => { e.preventDefault(); applyColor('foreColor', c); };
+    ts.appendChild(s);
+  });
+  const clearT = document.createElement('div');
+  clearT.className = 'swatch clear';
+  clearT.title = 'Default';
+  clearT.onmousedown = e => { e.preventDefault(); applyColor('foreColor', 'inherit'); };
+  ts.appendChild(clearT);
+
+  const hs = document.getElementById('hiliteSwatches');
+  hs.innerHTML = '';
+  HILITE_SWATCHES.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'swatch';
+    s.style.background = c === 'transparent'
+      ? 'linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%) 0 0/12px 12px, linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%) 6px 6px/12px 12px, #fff'
+      : c;
+    s.title = c;
+    s.onmousedown = e => { e.preventDefault(); applyColor('hiliteColor', c); };
+    hs.appendChild(s);
+  });
+}
+
+function applyColor(kind, color) {
+  if (!currentEditEl) return;
+  currentEditEl.focus();
+  if (kind === 'foreColor') {
+    if (color === 'inherit') {
+      document.execCommand('removeFormat', false, null);
+    } else {
+      document.execCommand('styleWithCSS', false, true);
+      document.execCommand('foreColor', false, color);
+    }
+  } else {
+    document.execCommand('styleWithCSS', false, true);
+    document.execCommand('hiliteColor', false, color);
+  }
+  closeAllPops();
+}
+
+function applyBlock(tag) {
+  if (!tag || !currentEditEl) return;
+  currentEditEl.focus();
+  document.execCommand('formatBlock', false, tag);
+}
+
+function wrapSelectionStyle(styleProp, value) {
+  if (!currentEditEl) return;
+  currentEditEl.focus();
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  if (range.collapsed) { toast('Select some text first.'); return; }
+  const span = document.createElement('span');
+  span.style[styleProp] = value;
+  try {
+    const contents = range.extractContents();
+    span.appendChild(contents);
+    range.insertNode(span);
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.removeAllRanges(); sel.addRange(newRange);
+  } catch (e) { console.warn(e); }
+}
+
+function applyFontFamily(font) {
+  if (!font) return;
+  wrapSelectionStyle('fontFamily', font);
+}
+function applyFontSize(size) {
+  if (!size) return;
+  if (size === 'reset') {
+    if (!currentEditEl) return;
+    currentEditEl.focus();
+    document.execCommand('removeFormat', false, null);
+    return;
+  }
+  wrapSelectionStyle('fontSize', size);
+}
+
+function addLink() {
+  if (!currentEditEl) return;
+  const url = prompt('Enter URL (https://…):');
+  if (!url) return;
+  currentEditEl.focus();
+  document.execCommand('createLink', false, url);
+}
+
+function togglePop(id, evt) {
+  evt && evt.stopPropagation();
+  const pop = document.getElementById(id);
+  const wasOpen = pop.classList.contains('show');
+  closeAllPops();
+  if (!wasOpen) pop.classList.add('show');
+}
+function closeAllPops() {
+  document.querySelectorAll('.fmt-pop').forEach(p => p.classList.remove('show'));
+}
+
+// Wire all toolbar buttons with execCommand
+document.addEventListener('DOMContentLoaded', () => {});
+function wireToolbar() {
+  document.querySelectorAll('.fmt-btn[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => {
+      e.preventDefault();
+      const cmd = btn.dataset.cmd;
+      if (!currentEditEl) return;
+      currentEditEl.focus();
+      document.execCommand('styleWithCSS', false, true);
+      document.execCommand(cmd, false, null);
+      updateToolbarActiveState();
+    });
+  });
+}
+function updateToolbarActiveState() {
+  if (!currentEditEl) return;
+  document.querySelectorAll('.fmt-btn[data-cmd]').forEach(btn => {
+    try {
+      btn.classList.toggle('active', document.queryCommandState(btn.dataset.cmd));
+    } catch (e) {}
+  });
+}
+document.addEventListener('selectionchange', updateToolbarActiveState);
+document.addEventListener('click', e => {
+  if (!e.target.closest('.fmt-toolbar') && !e.target.closest('.fmt-pop')) closeAllPops();
+});
+
+// Delegated click + key handling for all editable elements
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-edit]');
+  if (!el) return;
+  if (el.getAttribute('contenteditable') === 'true') return;
+  if (!unlocked) { requireUnlock(() => startInlineEdit(el)); e.preventDefault(); return; }
+  startInlineEdit(el);
+});
+document.addEventListener('keydown', e => {
+  const el = e.target.closest && e.target.closest('[data-edit][contenteditable="true"]');
+  if (!el) return;
+  if (e.key === 'Enter' && el.dataset.multiline !== 'true') {
+    e.preventDefault();
+    el.blur();
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    // revert
+    const key = el.dataset.key;
+    if (key && key.startsWith('week_title_')) {
+      const w = parseInt(key.split('_')[2], 10) - 1;
+      setEditableValue(el, state.weekTitles[w] || '');
+    } else if (key === 'post_title' || key === 'post_body') {
+      const id = el.dataset.postId;
+      const p = state.posts.find(x => x.id === id);
+      if (p) setEditableValue(el, key === 'post_title' ? p.title : p.body);
+    } else if (key === 'about_text') {
+      renderAbout();
+    } else if (key) {
+      setEditableValue(el, state.text[key] || '');
+    }
+    el.setAttribute('contenteditable', 'false');
+    el.blur();
+  }
+});
+document.addEventListener('blur', e => {
+  const el = e.target;
+  if (el && el.dataset && el.dataset.edit !== undefined) finishInlineEdit(el);
+}, true);
+
+/* ===================================================================
+   RENDERING
+   =================================================================== */
+function render() {
+  // Apply all text values from state
+  document.querySelectorAll('[data-edit][data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (state.text[k] !== undefined && !k.startsWith('week_title_') && k !== 'post_title' && k !== 'post_body') {
+      if (el.getAttribute('contenteditable') !== 'true') setEditableValue(el, state.text[k]);
+    }
+  });
+  renderTimeline();
+  renderProgress();
+}
+
+function renderAbout() {
+  const el = document.querySelector('[data-key="about_text"]');
+  if (el && el.getAttribute('contenteditable') !== 'true') {
+    el.innerHTML = state.text.about_text || '';
+  }
+}
+
+function renderTimeline() {
+  const list = document.getElementById('timelineList');
+  const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  const wf = document.getElementById('filterWeek').value;
+  list.innerHTML = '';
+
+  for (let w = 1; w <= 13; w++) {
+    if (wf && String(w) !== wf) continue;
+    const weekPosts = state.posts
+      .filter(p => p.week === w)
+      .filter(p => !q ||
+        (p.title||'').toLowerCase().includes(q) ||
+        (p.body||'').toLowerCase().includes(q) ||
+        (p.tags || []).join(' ').toLowerCase().includes(q))
+      .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    const hasPosts = weekPosts.length > 0;
+    const weekEl = document.createElement('div');
+    weekEl.className = 'week' + (hasPosts ? ' has-posts' : '');
+    weekEl.innerHTML = `
+      <div class="week-dot ${hasPosts ? 'colored' : ''}">${w}</div>
+      <div class="week-header">
+        <div class="week-title">
+          <small>Week ${w}</small>
+          <span data-edit data-key="week_title_${w}">${escapeHtml(state.weekTitles[w-1] || '')}</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="requireUnlock(()=>openPostModal(null, ${w}))">+ Add reflection</button>
+      </div>
+      <div class="posts-list" id="grid-${w}"></div>
+    `;
+    list.appendChild(weekEl);
+
+    const grid = weekEl.querySelector('.posts-list');
+    if (!hasPosts) {
+      const e = document.createElement('div');
+      e.className = 'empty';
+      e.innerHTML = `<div class="em-title">Nothing here yet.</div>
+        <div>Capture a thought from this week.</div>
+        <button class="btn btn-accent btn-sm" onclick="requireUnlock(()=>openPostModal(null, ${w}))">+ Write Week ${w}</button>`;
+      grid.appendChild(e);
+    } else {
+      weekPosts.forEach(p => grid.appendChild(postCard(p)));
+    }
+  }
+}
+
+function postCard(p) {
+  const card = document.createElement('article');
+  card.className = 'post';
+  const dateStr = p.date ? new Date(p.date + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric'}) : '';
+  const tagPills = (p.tags && p.tags.length)
+    ? p.tags.map(t => `<span class="pill pill-tag">#${escapeHtml(t)}</span>`).join('')
+    : '';
+  const initial = stripTags(p.title || 'R').slice(0,1).toUpperCase();
+  // Titles and bodies are HTML-capable now (toolbar formatting)
+  const titleHtml = p.title ? p.title : 'Untitled reflection';
+  const bodyHtml = p.body || '';
+  card.innerHTML = `
+    <div class="post-img-wrap ${p.image ? '' : 'no-img'}">
+      ${p.image ? `<img src="${p.image}" alt="">` : `<span>“ ${initial} ”</span>`}
+    </div>
+    <div class="post-body">
+      <div class="post-meta">
+        <span class="pill pill-week">Week ${p.week}</span>
+        ${dateStr ? `<span class="pill pill-date">${dateStr}</span>` : ''}
+        ${tagPills}
+      </div>
+      <h3 class="post-title" data-edit data-key="post_title" data-post-id="${p.id}">${titleHtml}</h3>
+      <div class="post-text" data-edit data-key="post_body" data-post-id="${p.id}" data-multiline="true">${bodyHtml}</div>
+      <div class="post-actions">
+        <button class="icon-btn" title="Read more" onclick="toggleExpand(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="icon-btn" title="Change image" onclick="requireUnlock(()=>openPostModal('${p.id}'))">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </button>
+        <div class="spacer"></div>
+        <button class="icon-btn" title="Edit (full)" onclick="requireUnlock(()=>openPostModal('${p.id}'))">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="icon-btn danger" title="Delete" onclick="requireUnlock(()=>deletePost('${p.id}'))">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function toggleExpand(btn) {
+  const text = btn.closest('.post-body').querySelector('.post-text');
+  text.classList.toggle('expanded');
+  btn.querySelector('svg').style.transform = text.classList.contains('expanded') ? 'rotate(180deg)' : '';
+}
+
+function renderProgress() {
+  const total = state.posts.length;
+  const weeks = new Set(state.posts.map(p => p.week)).size;
+  document.getElementById('postCount').textContent = Math.min(total, 10);
+  document.getElementById('totalPosts').textContent = total;
+  document.getElementById('weeksWithPosts').textContent = weeks;
+  const pct = Math.min(100, (total / 10) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  let checkin = '—';
+  if (total >= 9) checkin = '3 of 3';
+  else if (total >= 6) checkin = '2 of 3';
+  else if (total >= 3) checkin = '1 of 3';
+  document.getElementById('checkinStatus').textContent = checkin;
+}
+
+/* ===================================================================
+   POST MODAL — CRUD
+   =================================================================== */
+let pendingImage = null;
+
+function openPostModal(id = null, defaultWeek = null) {
+  const m = document.getElementById('postModal');
+  const title = document.getElementById('postModalTitle');
+  const weekSel = document.getElementById('postWeek');
+  weekSel.innerHTML = '';
+  for (let i = 1; i <= 13; i++) {
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = `Week ${i} — ${state.weekTitles[i-1] || ''}`;
+    weekSel.appendChild(opt);
+  }
+
+  document.getElementById('editingId').value = id || '';
+  pendingImage = null;
+  document.getElementById('previewWrap').classList.remove('has-img');
+  document.getElementById('imgInput').value = '';
+
+  if (id) {
+    const p = state.posts.find(x => x.id === id);
+    if (!p) return;
+    title.textContent = 'Edit Reflection';
+    document.getElementById('postWeek').value = p.week;
+    document.getElementById('postDate').value = p.date || '';
+    document.getElementById('postTitle').value = stripTags(p.title || '');
+    document.getElementById('postBody').value = htmlToText(p.body || '');
+    document.getElementById('postTags').value = (p.tags || []).join(', ');
+    if (p.image) {
+      pendingImage = p.image;
+      document.getElementById('previewImg').src = p.image;
+      document.getElementById('previewWrap').classList.add('has-img');
+    }
+  } else {
+    title.textContent = 'New Reflection';
+    document.getElementById('postWeek').value = defaultWeek || 1;
+    document.getElementById('postDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postBody').value = '';
+    document.getElementById('postTags').value = '';
+  }
+  m.classList.add('open');
+  setTimeout(() => document.getElementById('postTitle').focus(), 100);
+}
+function closePostModal() { document.getElementById('postModal').classList.remove('open'); }
+
+function savePost() {
+  const id = document.getElementById('editingId').value;
+  const week = parseInt(document.getElementById('postWeek').value, 10);
+  const date = document.getElementById('postDate').value;
+  const title = document.getElementById('postTitle').value.trim();
+  const body = document.getElementById('postBody').value.trim();
+  const tags = document.getElementById('postTags').value.split(',').map(s => s.trim()).filter(Boolean);
+
+  if (!title && !body) { toast('Add a title or some text first.'); return; }
+
+  // Body and title from modal are plain text → convert to safe HTML for storage
+  const titleHtml = escapeHtml(title);
+  const bodyHtml = escapeHtml(body).replace(/\n/g, '<br>');
+
+  if (id) {
+    const p = state.posts.find(x => x.id === id);
+    Object.assign(p, { week, date, title: titleHtml, body: bodyHtml, tags, image: pendingImage });
+    toast('Reflection updated.');
+  } else {
+    state.posts.push({
+      id: 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+      week, date, title: titleHtml, body: bodyHtml, tags, image: pendingImage,
+      createdAt: new Date().toISOString()
+    });
+    toast('Reflection saved.');
+  }
+  saveState();
+  closePostModal();
+  render();
+}
+
+function deletePost(id) {
+  if (!confirm('Delete this reflection? This cannot be undone.')) return;
+  state.posts = state.posts.filter(p => p.id !== id);
+  saveState();
+  render();
+  toast('Reflection deleted.');
+}
+
+/* ===================================================================
+   IMAGE HANDLING
+   =================================================================== */
+function onImageChosen(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  if (file.size > 4 * 1024 * 1024) { toast('Image too large — please use under 4 MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const max = 1400;
+      let { width, height } = img;
+      if (width > max || height > max) {
+        const r = Math.min(max / width, max / height);
+        width = Math.round(width * r); height = Math.round(height * r);
+      }
+      const c = document.createElement('canvas');
+      c.width = width; c.height = height;
+      c.getContext('2d').drawImage(img, 0, 0, width, height);
+      pendingImage = c.toDataURL('image/jpeg', 0.85);
+      document.getElementById('previewImg').src = pendingImage;
+      document.getElementById('previewWrap').classList.add('has-img');
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+function clearImage() {
+  pendingImage = null;
+  document.getElementById('imgInput').value = '';
+  document.getElementById('previewWrap').classList.remove('has-img');
+}
+
+// Drag & drop
+const fileDrop = document.getElementById('fileDrop');
+['dragenter','dragover'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.remove('drag'); }));
+fileDrop.addEventListener('drop', e => {
+  const f = e.dataTransfer.files[0];
+  if (f) {
+    document.getElementById('imgInput').files = e.dataTransfer.files;
+    onImageChosen({ target: { files: [f] } });
+  }
+});
+
+/* ===================================================================
+   EXPORT / IMPORT
+   =================================================================== */
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'reflective-journal-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported.');
+}
+function importData(ev) {
+  requireUnlock(() => {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!data.posts) throw new Error('Invalid file');
+        if (!confirm('Replace current journal with imported data?')) return;
+        state = data;
+        state.text = Object.assign({}, DEFAULT_TEXT, data.text || {});
+        state.weekTitles = data.weekTitles || DEFAULT_WEEK_TITLES.slice();
+        saveState();
+        render();
+        toast('Imported.');
+      } catch (e) { toast('Could not read that file.'); }
+    };
+    reader.readAsText(file);
+  });
+}
+
+/* ===================================================================
+   UTIL
+   =================================================================== */
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function stripTags(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html || '';
+  return d.textContent || '';
+}
+function htmlToText(html) {
+  // Convert <br> and block tags to newlines, then strip tags
+  let s = (html || '').replace(/<br\s*\/?>/gi, '\n')
+                       .replace(/<\/(p|div|h[1-6]|li|blockquote)>/gi, '\n')
+                       .replace(/<li[^>]*>/gi, '• ');
+  return stripTags(s).replace(/\n{3,}/g, '\n\n').trim();
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ===================================================================
+   INIT
+   =================================================================== */
+(function init() {
+  // week filter
+  const f = document.getElementById('filterWeek');
+  for (let i = 1; i <= 13; i++) {
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = 'Week ' + i;
+    f.appendChild(opt);
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const editing = document.querySelector('[contenteditable="true"]');
+      if (editing) return; // let edit handlers manage
+      closePostModal(); closePwModal();
+    }
+    if (e.key === 'n' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); requireUnlock(()=>openPostModal()); }
+    if (e.key === 'l' && (e.metaKey || e.ctrlKey) && e.shiftKey) { e.preventDefault(); toggleLock(); }
+  });
+  applyLockState();
+  buildSwatches();
+  wireToolbar();
+  // make sure about_text is populated on first load
+  renderAbout();
+  render();
+})();
+</script>
+</body>
+</html>
